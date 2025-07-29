@@ -173,7 +173,6 @@ async function aumentarQuantidade(item) {
         const novaQuantidade = item.quantity + 1
         await atualizarQuantidadeCarrinho(item.product_id, novaQuantidade)
         item.quantity = novaQuantidade
-        toast.success('Quantidade atualizada!')
     } catch (error) {
         console.error('Erro ao aumentar quantidade:', error)
         toast.error('Erro ao atualizar quantidade')
@@ -186,7 +185,6 @@ async function diminuirQuantidade(item) {
         const novaQuantidade = item.quantity - 1
         await atualizarQuantidadeCarrinho(item.product_id, novaQuantidade)
         item.quantity = novaQuantidade
-        toast.success('Quantidade atualizada!')
     } catch (error) {
         console.error('Erro ao diminuir quantidade:', error)
         toast.error('Erro ao atualizar quantidade')
