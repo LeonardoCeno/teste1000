@@ -244,7 +244,7 @@ async function criarModerador() {
 .btn-criar {
     width: 100%;
     padding: 16px 32px;
-    background-color: #4CAF50;
+    background-color: #1565C0;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -257,7 +257,7 @@ async function criarModerador() {
 }
 
 .btn-criar:hover:not(:disabled) {
-    background-color: #45a049;
+    background-color: #0D47A1;
 }
 
 .btn-criar:disabled {

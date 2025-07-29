@@ -258,7 +258,7 @@ onMounted(carregarEnderecos)
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: #4CAF50;
+    background-color: #1565C0;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -271,7 +271,7 @@ onMounted(carregarEnderecos)
 }
 
 .btn-novo-endereco:hover {
-    background-color: #45a049;
+    background-color: #0D47A1;
     transform: translateY(-1px);
 }
 
@@ -389,7 +389,7 @@ onMounted(carregarEnderecos)
 }
 
 .btn-salvar {
-    background-color: #030a11f5;
+    background-color: #1565C0;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -401,7 +401,7 @@ onMounted(carregarEnderecos)
 }
 
 .btn-salvar:hover {
-    background-color: #02060ac2;
+    background-color: #0D47A1;
 }
 
 .btn-cancelar {

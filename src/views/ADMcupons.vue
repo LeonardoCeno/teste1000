@@ -118,7 +118,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import api from '../services/api'
 
@@ -130,9 +130,15 @@ const erroCupons = ref('')
 // Estados de formulário
 const mostraFormulario = ref(false)
 const editando = ref(false)
-const editId = ref(null)
+const cupomId = ref(null)
 const mensagem = ref('')
 const mensagemEdicao = ref('')
+
+// Edição
+const editCodigo = ref('')
+const editPercentual = ref(0)
+const editDataInicio = ref('')
+const editDataFim = ref('')
 
 // Formulário de cupom
 const codigoForm = ref('')
@@ -140,18 +146,29 @@ const percentualForm = ref(0)
 const dataInicioForm = ref('')
 const dataFimForm = ref('')
 
-// Estados de exclusão
 const mostrarModalConfirmacao = ref(false)
 const cupomParaExcluir = ref(null)
 
-// Filtros
 const termoBusca = ref('')
 const statusSelecionado = ref('')
 
-// Debounce para busca
 let timeoutBusca = null
 
-// Funções utilitárias
+// Watch para sincronizar variáveis de edição com formulário
+watch(editando, (novo) => {
+  if (novo) {
+    codigoForm.value = editCodigo.value
+    percentualForm.value = editPercentual.value
+    dataInicioForm.value = editDataInicio.value
+    dataFimForm.value = editDataFim.value
+  } else {
+    codigoForm.value = ''
+    percentualForm.value = 0
+    dataInicioForm.value = ''
+    dataFimForm.value = ''
+  }
+})
+
 function formatarData(data) {
   return new Date(data).toLocaleDateString('pt-BR', { 
     year: 'numeric', 
@@ -166,41 +183,34 @@ function getStatusText(cupom) {
   const hoje = new Date()
   const inicio = new Date(cupom.start_date)
   const fim = new Date(cupom.end_date)
-  
   if (hoje >= inicio && hoje <= fim) return 'ATIVO'
   if (hoje > fim) return 'EXPIRADO'
   return 'FUTURO'
 }
 
+// a diferença dessa pra outra é que a de cima retorna texto e essa de baixo CSS
 function getStatusClass(cupom) {
   const hoje = new Date()
   const inicio = new Date(cupom.start_date)
   const fim = new Date(cupom.end_date)
-  
   if (hoje >= inicio && hoje <= fim) return 'cupom-ativo'
   if (hoje > fim) return 'cupom-expirado'
   return 'cupom-futuro'
 }
 
-// Computed para filtros
 const cuponsFiltrados = computed(() => {
   let filtrados = cupons.value
-
-  // Filtro por busca
   if (termoBusca.value.trim()) {
     const termo = termoBusca.value.toLowerCase().trim()
     filtrados = filtrados.filter(cupom => 
       cupom.code && cupom.code.toLowerCase().includes(termo)
     )
   }
-
-  // Filtro por status
   if (statusSelecionado.value) {
     const hoje = new Date()
     filtrados = filtrados.filter(cupom => {
       const inicio = new Date(cupom.start_date)
       const fim = new Date(cupom.end_date)
-      
       switch (statusSelecionado.value) {
         case 'ativo': return hoje >= inicio && hoje <= fim
         case 'expirado': return hoje > fim
@@ -209,37 +219,31 @@ const cuponsFiltrados = computed(() => {
       }
     })
   }
-
-  // Ordenar: ativos primeiro, depois futuros, depois expirados
+  // aq q ordena primeiro ativos dps futuros dai expirados
   filtrados.sort((a, b) => {
     const hoje = new Date()
     const aInicio = new Date(a.start_date)
     const aFim = new Date(a.end_date)
     const bInicio = new Date(b.start_date)
     const bFim = new Date(b.end_date)
-    
     const aAtivo = hoje >= aInicio && hoje <= aFim
     const bAtivo = hoje >= bInicio && hoje <= bFim
     const aFuturo = hoje < aInicio
     const bFuturo = hoje < bInicio
-    
     if (aAtivo && !bAtivo) return -1
     if (bAtivo && !aAtivo) return 1
     if (aFuturo && !bFuturo) return -1
     if (bFuturo && !aFuturo) return 1
     return 0
   })
-
   return filtrados
 })
 
-// Funções de busca
 function onInputBusca() {
   clearTimeout(timeoutBusca)
   timeoutBusca = setTimeout(() => {}, 100)
 }
 
-// Carregamento de dados
 async function carregarCupons() {
   carregandoCupons.value = true
   erroCupons.value = ''
@@ -253,20 +257,23 @@ async function carregarCupons() {
   }
 }
 
-// Funções de formulário
 function abrirCriacao() {
   editando.value = false
   mostraFormulario.value = true
-  limparFormulario()
+  codigoForm.value = ''
+  percentualForm.value = 0
+  dataInicioForm.value = ''
+  dataFimForm.value = ''
+  mensagem.value = ''
 }
 
 function fecharFormulario() {
   mostraFormulario.value = false
   editando.value = false
-  limparFormulario()
-}
-
-function limparFormulario() {
+  editCodigo.value = ''
+  editPercentual.value = 0
+  editDataInicio.value = ''
+  editDataFim.value = ''
   codigoForm.value = ''
   percentualForm.value = 0
   dataInicioForm.value = ''
@@ -284,7 +291,6 @@ async function criarCupom() {
       start_date: dataInicioForm.value,
       end_date: dataFimForm.value
     }
-    
     await api.post('/coupons/', cupomData)
     toast.success('Cupom criado com sucesso!')
     await carregarCupons()
@@ -296,33 +302,44 @@ async function criarCupom() {
 
 function editarCupom(cupom) {
   editando.value = true
-  editId.value = cupom.id
+  mostraFormulario.value = false
+  cupomId.value = cupom.id
+  editCodigo.value = cupom.code
+  editPercentual.value = cupom.discount_percentage
+  editDataInicio.value = cupom.start_date.slice(0, 16)
+  editDataFim.value = cupom.end_date.slice(0, 16)
+  mensagemEdicao.value = ''
   codigoForm.value = cupom.code
   percentualForm.value = cupom.discount_percentage
   dataInicioForm.value = cupom.start_date.slice(0, 16)
   dataFimForm.value = cupom.end_date.slice(0, 16)
-  mensagemEdicao.value = ''
   mostraFormulario.value = true
 }
 
 function cancelarEdicao() {
   editando.value = false
-  editId.value = null
-  limparFormulario()
+  cupomId.value = null
+  editCodigo.value = ''
+  editPercentual.value = 0
+  editDataInicio.value = ''
+  editDataFim.value = ''
+  mensagemEdicao.value = ''
   mostraFormulario.value = false
+  codigoForm.value = ''
+  percentualForm.value = 0
+  dataInicioForm.value = ''
+  dataFimForm.value = ''
 }
 
 async function atualizarCupom() {
   mensagemEdicao.value = ''
   try {
-    const cupomData = {
+    await api.put(`/coupons/${cupomId.value}`, {
       code: codigoForm.value,
       discount_percentage: percentualForm.value,
       start_date: dataInicioForm.value,
       end_date: dataFimForm.value
-    }
-    
-    await api.put(`/coupons/${editId.value}`, cupomData)
+    })
     toast.success('Cupom atualizado com sucesso!')
     await carregarCupons()
     cancelarEdicao()
@@ -361,7 +378,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* ===== LAYOUT PRINCIPAL ===== */
+
 .tudo {
   display: flex;
   flex-direction: column;
@@ -376,7 +393,6 @@ onMounted(async () => {
   height: 30%;
 }
 
-/* ===== FORMULÁRIOS ===== */
 .criacao-form-wrapper {
   display: flex;
   justify-content: center;
@@ -432,7 +448,7 @@ onMounted(async () => {
 }
 
 .criacao-form button {
-  background-color: #4CAF50;
+  background-color: #1565C0;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -564,7 +580,7 @@ onMounted(async () => {
   padding: 10px 20px;
   font-size: 1.2rem;
   color: white;
-  background-color: #4CAF50;
+  background-color: #1565C0;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -573,7 +589,7 @@ onMounted(async () => {
 }
 
 .novo-cupom-btn:hover {
-  background-color: #45a049;
+  background-color: #0D47A1;
 }
 
 /* ===== LISTA DE CUPONS ===== */

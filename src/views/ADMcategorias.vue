@@ -283,7 +283,7 @@ function abrirCriacao() {
 .nova-categoria-btn {
     padding: 10px 20px;
     font-size: 1.2rem;
-    background-color: #4CAF50;
+    background-color: #1565C0;
     color: white;
     border: none;
     border-radius: 5px;
@@ -306,7 +306,7 @@ function abrirCriacao() {
 }
 
 .nova-categoria-btn:hover {
-    background-color: #45a049;
+    background-color: #0D47A1;
 }
 
 .criacao-form-wrapper {
@@ -388,7 +388,7 @@ function abrirCriacao() {
 }
 
 .criacao-form button {
-    background-color: #4CAF50;
+    background-color: #1565C0;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -413,7 +413,7 @@ function abrirCriacao() {
 }
 
 .criacao-form button:hover {
-    background-color: #45a049;
+    background-color: #0D47A1;
 }
 
 .criacao-form button:last-child {

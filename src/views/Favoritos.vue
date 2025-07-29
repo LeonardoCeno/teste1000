@@ -1,21 +1,15 @@
 <template>
     <div class="tudo">
         <div class="titulo">
-            <div class="linebranca"></div>
             <h3>MEUS FAVORITOS</h3>
-            <div class="linebranca"></div>
         </div>
         <div class="soumdetalhe"></div>
-        
-        <!-- Botão para remover todos os favoritos -->
         <div v-if="favoritos.length > 0" class="botao-remover-todos">
             <button @click="mostrarConfirmacao" class="btn-remover-todos">
                 <span style="font-size: 16px; font-weight: bold; color: white;">✕</span>
                 <span>Remover Todos os Favoritos</span>
             </button>
         </div>
-        
-        <!-- Modal de confirmação -->
         <div v-if="mostrarModal" class="modal-overlay" @click="fecharModal">
             <div class="modal-content" @click.stop>
                 <div class="modal-header">
@@ -31,7 +25,6 @@
                 </div>
             </div>
         </div>
-        
         <div class="produtos">
             <div v-if="carregando" class="carregando">Carregando favoritos...</div>
             <div v-else-if="erro" class="erro">{{ erro }}</div>
@@ -258,11 +251,6 @@ function confirmarRemocao() {
 </script>
 
 <style scoped>
-.linebranca {
-    width: 20vw;
-    height: 1px;
-    background-color: #ffffff;
-}
 
 .tudo {
     display: flex;
@@ -277,7 +265,7 @@ function confirmarRemocao() {
 
 .titulo {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     background-color: #e11d48;
     height: 4.5rem;

@@ -1,18 +1,11 @@
 <template>
     <div class="tudo">
         <div class="carrinho-container">
-            <!-- Header do Carrinho -->
-            <div class="carrinho-header">
                 <div class="titulo-secao">
-                    <div class="linebranca"></div>
                     <h2>MEU CARRINHO</h2>
-                    <div class="linebranca"></div>
                 </div>
-            </div>
-
-            <!-- Conteúdo Principal -->
+                <div class="soumdetalhe"></div>
             <div class="carrinho-content">
-                <!-- Carrinho Vazio -->
                 <div v-if="carregando" class="estado-carrinho">
                     <div class="loading-spinner"></div>
                     <p>Carregando carrinho...</p>
@@ -229,7 +222,15 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
 </script>
 
 <style scoped>
-/* ===== LAYOUT PRINCIPAL ===== */
+
+.soumdetalhe {
+    width: 100%;
+    max-width: 1250px;
+    height: 1px;
+    background-color: #838383;
+    margin-bottom: 5px;
+}
+
 .tudo {
     width: 100%;
     height: 100vh;
@@ -250,19 +251,16 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
     flex-direction: column;
 }
 
-.carrinho-header {
-    margin-bottom: 30px;
-}
-
 .titulo-secao {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     background-color: #4f79a3;
     height: 4.5rem;
     width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
+    margin-bottom: 15px;
 }
 
 .titulo-secao h2 {
@@ -270,12 +268,6 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
     color: rgb(255, 255, 255);
     margin: 0;
     font-weight: bold;
-}
-
-.linebranca {
-    width: 20vw;
-    height: 1px;
-    background-color: #ffffff;
 }
 
 .carrinho-content {
@@ -381,7 +373,7 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
 
 .item-carrinho:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .item-imagem {
@@ -571,7 +563,7 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
 
 .btn-finalizar-compra {
     padding: 16px 20px;
-    background-color: #28a745;
+    background-color: #1565C0;
     color: white;
     border: none;
     border-radius: 8px;
@@ -582,7 +574,7 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
 }
 
 .btn-finalizar-compra:hover {
-    background-color: #218838;
+    background-color: #0D47A1;
 }
 
 .resumo-continuar {
