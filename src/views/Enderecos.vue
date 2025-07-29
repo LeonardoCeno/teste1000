@@ -304,6 +304,7 @@ onMounted(carregarEnderecos)
     max-width: 500px;
     width: 100%;
     overflow: hidden;
+    border: 2px solid #02060af5;
 }
 
 .modal-header {

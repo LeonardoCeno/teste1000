@@ -330,6 +330,7 @@ function abrirCriacao() {
     width: 90%;
     max-width: 500px;
     text-align: center;
+    border: 2px solid #02060af5;
 }
 
 @media (max-width: 768px) {
@@ -682,6 +683,7 @@ function abrirCriacao() {
     max-width: 400px;
     width: 90%;
     text-align: center;
+    border: 2px solid #02060af5;
 }
 
 .modal-confirmacao h3 {

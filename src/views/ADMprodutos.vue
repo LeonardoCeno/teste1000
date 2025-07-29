@@ -478,6 +478,7 @@ async function carregarProdutos() {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  border: 2px solid #02060af5;
 }
 
 .criacao-form h2 {
@@ -771,6 +772,7 @@ li {
     max-width: 400px;
     width: 90%;
     text-align: center;
+    border: 2px solid #02060af5;
 }
 
 .modal-confirmacao h3 {

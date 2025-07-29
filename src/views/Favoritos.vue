@@ -349,6 +349,7 @@ function confirmarRemocao() {
     max-width: 400px;
     width: 90%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 2px solid #02060af5;
 }
 
 .modal-header {
