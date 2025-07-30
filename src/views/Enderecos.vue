@@ -97,8 +97,8 @@
             </div>
 
             <div class="enderecos-lista">
-                <div v-if="carregando" class="carregando">
-                    <div class="spinner"></div>
+                <div v-if="carregando" class="loading-container">
+                    <div class="loading-spinner"></div>
                     <p>Carregando endereços...</p>
                 </div>
                 <div v-else-if="erro" class="erro">{{ erro }}</div>
@@ -425,6 +425,30 @@ onMounted(carregarEnderecos)
     width: 100%;
 }
 
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .carregando {
     display: flex;
     flex-direction: column;
@@ -441,11 +465,6 @@ onMounted(carregarEnderecos)
     border-top: 4px solid #030a11f5;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 .erro {

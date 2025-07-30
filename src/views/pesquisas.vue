@@ -108,7 +108,10 @@
             </div>
         </div>
         <div class="tudo-conteudos">
-            <div v-if="carregando" class="carregando">Carregando produtos...</div>
+            <div v-if="carregando" class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Carregando produtos...</p>
+            </div>
             <div v-else-if="erro" class="erro">{{ erro }}</div>
             <div v-else-if="produtosFiltrados.length === 0" class="nenhum-produto">Nenhum produto encontrado.</div>
             <div v-else-if="!modoum" class="lista-pesquisa">
@@ -1137,6 +1140,30 @@ watch(totalPaginas, (novoTotal) => {
     text-align: center;
     width: 100%;
 }
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .carregando {
     color: #3a9c73;
     margin-top: 20px;

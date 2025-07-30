@@ -3,7 +3,10 @@
     <div class="dados-container">
         <input type="file" ref="fileInput" accept="image/*" style="display:none" @change="onFileChange" />
         <img :src="userImageUrl" alt="" class="foto-usuario" @click="triggerFileInput" title="Clique para alterar a foto" />
-        <div v-if="carregando" class="carregando">Carregando dados...</div>
+        <div v-if="carregando" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Carregando dados...</p>
+        </div>
         <div v-else-if="erro" class="erro">{{ erro }}</div>
         <div v-else>
             <div class="informacoes" ref="informacoesRef">
@@ -251,6 +254,30 @@ async function confirmarEdicao() {
 }
 
 /* ===== ESTADOS DE CARREGAMENTO ===== */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .carregando {
     color: #666;
     font-size: 1.1rem;

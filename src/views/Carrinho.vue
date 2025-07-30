@@ -6,7 +6,7 @@
                 </div>
                 <div class="soumdetalhe"></div>
             <div class="carrinho-content">
-                <div v-if="carregando" class="estado-carrinho">
+                <div v-if="carregando" class="loading-container">
                     <div class="loading-spinner"></div>
                     <p>Carregando carrinho...</p>
                 </div>
@@ -285,14 +285,26 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
     text-align: center;
 }
 
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+}
+
 .loading-spinner {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #4f79a3;
+    border-top: 4px solid #3498db;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 @keyframes spin {
@@ -343,7 +355,7 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
     display: flex;
     gap: 30px;
     width: 100%;
-    height: 85%;
+    height: 87%;
 }
 
 .itens-container {

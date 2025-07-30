@@ -83,7 +83,10 @@
           </button>
         </div>
       </div>
-    <div v-if="carregandoProdutos">Carregando produtos...</div>
+    <div v-if="carregandoProdutos" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Carregando produtos...</p>
+    </div>
     <div v-else-if="erroProdutos">{{ erroProdutos }}</div>
     <div v-else>
         <div v-if="produtosFiltrados.length === 0">
@@ -783,6 +786,30 @@ li {
 
 .btn-cancelar:hover {
     background-color: #545b62;
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .titulo-container {

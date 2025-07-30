@@ -26,7 +26,10 @@
             <div class="botoes" >
                 <h3>Categorias</h3> <button class="nova-categoria-btn" @click="abrirCriacao">Nova categoria</button>
             </div>
-        <div v-if="carregandoCategorias">Carregando categorias...</div>
+        <div v-if="carregandoCategorias" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Carregando categorias...</p>
+        </div>
         <div v-else-if="erroCategorias">{{ erroCategorias }}</div>
         <div v-else>
         <div v-if="categorias.length === 0">Nenhuma categoria cadastrada ainda.</div>
@@ -652,6 +655,30 @@ function abrirCriacao() {
         font-size: 0.8rem;
         padding: 1px 6px;
     }
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @media (max-width: 480px) {

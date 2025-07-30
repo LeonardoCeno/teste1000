@@ -26,7 +26,10 @@
             </div>
         </div>
         <div class="produtos">
-            <div v-if="carregando" class="carregando">Carregando favoritos...</div>
+            <div v-if="carregando" class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Carregando favoritos...</p>
+            </div>
             <div v-else-if="erro" class="erro">{{ erro }}</div>
             <div v-else-if="favoritos.length === 0" class="nenhum-favorito">
                 <h2>Nenhum favorito encontrado</h2>
@@ -546,6 +549,30 @@ function confirmarRemocao() {
     height: 1px;
     background-color: #838383;
     margin-bottom: 5px;
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .carregando,
