@@ -15,7 +15,7 @@
           <div class="linha-dupla">
             <div class="campo-metade">
               <label>Preço:</label>
-              <input type="number" v-model.number="precoForm" min="0" step="1" required />
+              <input type="number" v-model.number="precoForm" min="0" step="0.01" required />
             </div>
             <div class="campo-metade">
               <label>Estoque:</label>
@@ -134,22 +134,13 @@ const mostraFormulario = ref(false)
 const mostrarModalConfirmacao = ref(false)
 const produtoParaExcluir = ref(null)
 
-// Busca
 const termoBusca = ref('')
 let timeoutBusca = null
 
-// Alternância de headers
 const modoDesconto = ref(false)
 
-// Edição
 const editando = ref(false)
-const produtoEmEdicaoId = ref(null)
-const editNome = ref('')
-const editDescricao = ref('')
-const editPreco = ref(0)
-const editEstoque = ref(0)
-const editCategoriaId = ref('')
-const editImagem = ref(null)
+const idProduto = ref(null)
 const mensagemEdicao = ref('')
 
 const nomeForm = ref('')
@@ -215,24 +206,6 @@ function alternarModo() {
   estoqueSelecionado.value = ''
 }
 
-watch(editando, (novo) => {
-  if (novo) {
-    nomeForm.value = editNome.value
-    descricaoForm.value = editDescricao.value
-    precoForm.value = editPreco.value
-    estoqueForm.value = editEstoque.value
-    categoriaIdForm.value = editCategoriaId.value
-    imagemForm.value = null
-  } else {
-    nomeForm.value = ''
-    descricaoForm.value = ''
-    precoForm.value = 0
-    estoqueForm.value = 0
-    categoriaIdForm.value = ''
-    imagemForm.value = null
-  }
-})
-
 onMounted(async () => {
   try {
     const { data } = await api.get('/categories/user/228')
@@ -263,6 +236,7 @@ function abrirCriacao() {
 function fecharFormulario() {
   mostraFormulario.value = false
   editando.value = false
+  idProduto.value = null
   nomeForm.value = ''
   descricaoForm.value = ''
   precoForm.value = 0
@@ -297,13 +271,7 @@ async function criarProduto() {
 function editarProduto(produto) {
   editando.value = true
   mostraFormulario.value = false
-  produtoEmEdicaoId.value = produto.id
-  editNome.value = produto.name
-  editDescricao.value = produto.description
-  editPreco.value = produto.price
-  editEstoque.value = produto.stock
-  editCategoriaId.value = produto.category_id
-  editImagem.value = null
+  idProduto.value = produto.id
   mensagemEdicao.value = ''
   nomeForm.value = produto.name
   descricaoForm.value = produto.description
@@ -315,13 +283,7 @@ function editarProduto(produto) {
 }
 function cancelarEdicao() {
   editando.value = false
-  produtoEmEdicaoId.value = null
-  editNome.value = ''
-  editDescricao.value = ''
-  editPreco.value = 0
-  editEstoque.value = 0
-  editCategoriaId.value = ''
-  editImagem.value = null
+  idProduto.value = null
   mensagemEdicao.value = ''
   mostraFormulario.value = false
   nomeForm.value = ''
@@ -335,19 +297,19 @@ function cancelarEdicao() {
 async function atualizarProduto() {
   mensagemEdicao.value = ''
   try {
-    await api.put(`/products/${produtoEmEdicaoId.value}`, {
+    await api.put(`/products/${idProduto.value}`, {
       name: nomeForm.value,
       description: descricaoForm.value,
       price: precoForm.value,
       category_id: categoriaIdForm.value
     })
-    await api.put(`/products/${produtoEmEdicaoId.value}/stock`, {
+    await api.put(`/products/${idProduto.value}/stock`, {
       stock: Number(estoqueForm.value)
     })
     if (imagemForm.value) {
       const formData = new FormData()
       formData.append('image', imagemForm.value)
-      await api.put(`/products/${produtoEmEdicaoId.value}/image`, formData, {
+      await api.put(`/products/${idProduto.value}/image`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
     }
@@ -411,7 +373,7 @@ async function carregarProdutos() {
     width: 100%;
     height: 100%;
     background-color: #ffffff;
-    padding: 50px 0px 0px 70px;
+    padding: 20px;
 }
 
 .produtos {
@@ -606,7 +568,7 @@ ul {
   margin-top: 1rem;
   padding-left: 0;
   list-style: none;
-  max-height: 70vh;
+  max-height: 65vh;
   overflow-y: auto;
   scrollbar-color: rgb(100, 100, 100) rgba(241, 241, 241, 0.527);
 }

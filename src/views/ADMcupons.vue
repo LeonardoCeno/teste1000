@@ -134,11 +134,7 @@ const cupomId = ref(null)
 const mensagem = ref('')
 const mensagemEdicao = ref('')
 
-// Edição
-const editCodigo = ref('')
-const editPercentual = ref(0)
-const editDataInicio = ref('')
-const editDataFim = ref('')
+
 
 // Formulário de cupom
 const codigoForm = ref('')
@@ -154,20 +150,7 @@ const statusSelecionado = ref('')
 
 let timeoutBusca = null
 
-// Watch para sincronizar variáveis de edição com formulário
-watch(editando, (novo) => {
-  if (novo) {
-    codigoForm.value = editCodigo.value
-    percentualForm.value = editPercentual.value
-    dataInicioForm.value = editDataInicio.value
-    dataFimForm.value = editDataFim.value
-  } else {
-    codigoForm.value = ''
-    percentualForm.value = 0
-    dataInicioForm.value = ''
-    dataFimForm.value = ''
-  }
-})
+
 
 function formatarData(data) {
   return new Date(data).toLocaleDateString('pt-BR', { 
@@ -270,10 +253,7 @@ function abrirCriacao() {
 function fecharFormulario() {
   mostraFormulario.value = false
   editando.value = false
-  editCodigo.value = ''
-  editPercentual.value = 0
-  editDataInicio.value = ''
-  editDataFim.value = ''
+  cupomId.value = null
   codigoForm.value = ''
   percentualForm.value = 0
   dataInicioForm.value = ''
@@ -304,10 +284,6 @@ function editarCupom(cupom) {
   editando.value = true
   mostraFormulario.value = false
   cupomId.value = cupom.id
-  editCodigo.value = cupom.code
-  editPercentual.value = cupom.discount_percentage
-  editDataInicio.value = cupom.start_date.slice(0, 16)
-  editDataFim.value = cupom.end_date.slice(0, 16)
   mensagemEdicao.value = ''
   codigoForm.value = cupom.code
   percentualForm.value = cupom.discount_percentage
@@ -319,10 +295,6 @@ function editarCupom(cupom) {
 function cancelarEdicao() {
   editando.value = false
   cupomId.value = null
-  editCodigo.value = ''
-  editPercentual.value = 0
-  editDataInicio.value = ''
-  editDataFim.value = ''
   mensagemEdicao.value = ''
   mostraFormulario.value = false
   codigoForm.value = ''
@@ -348,7 +320,6 @@ async function atualizarCupom() {
   }
 }
 
-// Funções de exclusão
 function abrirModalExclusao(id) {
   cupomParaExcluir.value = id
   mostrarModalConfirmacao.value = true
@@ -371,7 +342,6 @@ function fecharModalConfirmacao() {
   cupomParaExcluir.value = null
 }
 
-// Inicialização
 onMounted(async () => {
   await carregarCupons()
 })
@@ -477,7 +447,6 @@ onMounted(async () => {
   margin-bottom: 0;
 }
 
-/* ===== HEADER E FILTROS ===== */
 .cupons-header {
   display: flex;
   align-items: center;
@@ -515,7 +484,6 @@ onMounted(async () => {
   border-bottom: 2px solid #e0e0e0;
 }
 
-/* ===== BUSCA ===== */
 .input-busca {
   display: flex;
   align-items: center;
@@ -559,7 +527,7 @@ onMounted(async () => {
   right: 15px;
 }
 
-/* ===== FILTROS ===== */
+
 .filtro-status {
   display: flex;
   align-items: center;
@@ -575,7 +543,6 @@ onMounted(async () => {
   min-width: fit-content;
 }
 
-/* ===== BOTÕES ===== */
 .novo-cupom-btn {
   padding: 10px 20px;
   font-size: 1.2rem;
@@ -592,7 +559,6 @@ onMounted(async () => {
   background-color: #0D47A1;
 }
 
-/* ===== LISTA DE CUPONS ===== */
 .lista {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -611,7 +577,6 @@ ul {
   scrollbar-color: rgb(100, 100, 100) rgba(241, 241, 241, 0.527);
 }
 
-/* ===== CUPOM ===== */
 .cupom {
   background-color: #f0f0f0;
   padding: 20px;
@@ -686,7 +651,6 @@ ul {
   display: inline-block;
 }
 
-/* ===== ESTADOS DE CUPOM ===== */
 .cupom-ativo {
   border: 2px solid #4CAF50 !important;
   background-color: #f8fff8 !important;
@@ -701,7 +665,6 @@ ul {
 .cupom-expirado {
   border: 2px solid #f44336 !important;
   background-color: #fff8f8 !important;
-  opacity: 0.8;
 }
 
 .cupom-expirado .status span {
@@ -721,7 +684,6 @@ ul {
   border: 1px solid #ff9800;
 }
 
-/* ===== BOTÕES DE AÇÃO ===== */
 .BTli {
   display: flex;
   flex-direction: column;
@@ -757,7 +719,6 @@ ul {
   background-color: #b71c1c !important;
 }
 
-/* ===== LOADING ===== */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -792,7 +753,6 @@ ul {
   font-size: 1.1rem;
 }
 
-/* ===== MODAIS ===== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -862,7 +822,6 @@ ul {
   background-color: #545b62;
 }
 
-/* ===== LAYOUTS ===== */
 .linha-dupla {
   display: flex;
   gap: 16px;
@@ -874,7 +833,6 @@ ul {
   flex-direction: column;
 }
 
-/* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
   .tudo {
     padding: 20px 15px 0px 15px;
@@ -1127,7 +1085,7 @@ ul {
   }
 }
 
-/* ===== TELAS GRANDES ===== */
+
 @media (min-width: 1200px) {
   .cupons-header {
     flex-direction: row;
