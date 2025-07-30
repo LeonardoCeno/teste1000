@@ -1,6 +1,5 @@
 <template>
     <TopBar />
-    
     <header>
         <a class="logo desktop" href="/">
         <img src="../components/img/agrsimtabao-Photoroom.png" alt="" />
@@ -890,6 +889,7 @@ button:hover img {
     margin-top: 4px;
     border: 1px, solid #000000;
 }
+
 .conta-dropdown-menu button {
     color: #000000;
     padding: 10px 18px;
@@ -899,8 +899,11 @@ button:hover img {
     cursor: pointer;
     transition: background 0.2s;
 }
+
 .conta-dropdown-menu button:hover {
     color: #079ac7;
+    border-top: 0.5px solid grey;
+    border-bottom: 0.5px solid grey;
 }
 
 .categorias-dropdown-menu {

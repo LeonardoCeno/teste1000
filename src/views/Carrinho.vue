@@ -39,15 +39,13 @@
                                         <button 
                                             @click="diminuirQuantidade(item)" 
                                             :disabled="item.quantity <= 1"
-                                            class="btn-quantidade"
-                                        >
+                                            class="btn-quantidade">
                                             -
                                         </button>
                                         <span class="quantidade-valor">{{ item.quantity }}</span>
                                         <button 
                                             @click="aumentarQuantidade(item)" 
-                                            class="btn-quantidade"
-                                        >
+                                            class="btn-quantidade">
                                             +
                                         </button>
                                     </div>
@@ -345,7 +343,7 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
     display: flex;
     gap: 30px;
     width: 100%;
-    height: 100%;
+    height: 85%;
 }
 
 .itens-container {
@@ -634,6 +632,9 @@ window.addEventListener('carrinho-atualizado', carregarCarrinho)
     }
     .resumo-carrinho {
         padding: 20px;
+    }
+    .carrinho-com-itens {
+        height: 100%;
     }
 }
 
